@@ -6,7 +6,11 @@ public class RotateCylinder : MonoBehaviour{
     
     [SerializeField]private float rotateSpeed = 0.2f;
     [SerializeField]private InputSystem input;
+    [SerializeField]private GameData gameData;
     private void Start() {
+        if(gameData != null){
+            rotateSpeed = gameData.GetRotateSpeed(rotateSpeed);
+        }
         input.onTouch += (d) =>{
             Roatate(d);
         };

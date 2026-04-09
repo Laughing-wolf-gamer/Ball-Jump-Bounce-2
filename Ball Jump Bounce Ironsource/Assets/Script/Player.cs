@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody rb;
-    [SerializeField]private float speed;
+    [SerializeField]private float baseJumpForce = 7f;
     [SerializeField]private Transform raycastTransformer;
     [SerializeField]private ParticleSystem particle;
     [SerializeField]private Animator PlayerAnimation;
@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField]private GameLoop gameLoop;
     private bool ignoreCollision;
     [SerializeField]private UiManager uiManager;
+    [SerializeField]private GameData gameData;
     private void Awake() {
         rb = GetComponent<Rigidbody>();
         
@@ -25,7 +26,8 @@ public class Player : MonoBehaviour
         else if(other.transform.CompareTag("Platform"))
         {
             rb.linearVelocity = Vector3.zero;
-            rb.AddForce(Vector3.up * speed,ForceMode.Impulse);
+            float jumpForce = gameData != null ? gameData.GetJumpForce(baseJumpForce) : baseJumpForce;
+            rb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse);
             ignoreCollision = true;
             Invoke(nameof(ResetCollision),0.2f);
         }
